@@ -25,7 +25,8 @@ public class RssFetcher {
         return feed;
     }
 
-    public void update() {
+    public boolean update() {
+        String newFeed = "";
         try {
             SAXBuilder builder = new SAXBuilder();
             URL url = new URL(link);
@@ -40,19 +41,23 @@ public class RssFetcher {
                     content = element.getText();
                 }
             }
-            feed = title + formatEntry(content);
+            newFeed = title + new HtmlParser().parseHtml(content);
 
 
         } catch (IOException e) {
-            feed = "Unable to update RSS Feed. (IO ERROR)";
             System.out.println(e.getMessage());
         } catch (JDOMException e) {
-            feed = "Unable to update RSS Feed. (XML ERROR)";
             System.out.println(e.getMessage());
+        }
+        if (newFeed.equals(feed)) {
+            return false;
+        } else {
+            feed = newFeed;
+            return true;
         }
     }
 
-    private String formatEntry(String rawStr) {
+    /*private String formatEntry(String rawStr) {
         rawStr = rawStr.replaceAll("</div>", "\n");
         rawStr = rawStr.replaceAll("<br>", "\n");
         rawStr = rawStr.replaceAll("&#160;", " ");
@@ -79,5 +84,5 @@ public class RssFetcher {
         }
 
         return formattedFinal;
-    }
+    }*/
 }

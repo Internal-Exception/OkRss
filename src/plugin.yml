@@ -1,0 +1,9 @@
+name: okRSS
+version: 0.1
+description: Holographic RSS feed
+author: kyler
+main: com.kylerskeens.okrss.OkRss
+depend: [HolographicDisplays]
+
+commands:
+  okRSS:
